@@ -1,0 +1,11 @@
+<h4>Hello {{ user.first_name|title }} {{ user.last_name|title }}</h4>
+
+<p>
+  Your Transfter request for ${{ amount }} to Account No: {{ other_account }}
+  has been successfully completed. After transaction your total balance is
+  <!--  -->
+  ${{ user.account.balance }}
+</p>
+
+<p>Thank you for banking with us</p>
+<p>Mamar Bank</p>

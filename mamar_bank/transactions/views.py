@@ -12,6 +12,7 @@ from django.db.models import Sum
 from transactions.forms import DepositForm, WithdrawForm, LoanRequestForm, TransferForm
 from transactions.models import Transaction, Bank
 from accounts.models import UserBankAccount
+from core.helpers.send_email import send_transaction_email
 
 
 class TransactionCreateMixin(LoginRequiredMixin, CreateView):
@@ -120,6 +121,21 @@ class TransferMoneyView(TransactionCreateMixin):
 
         messages.success(
             self.request, f"$ {amount} transfered to {account_number} account"
+        )
+
+        send_transaction_email(
+            self.request.user,
+            amount,
+            "Transfer Information",
+            "transactions/transfer_email.html",
+            receiver,
+        )
+        send_transaction_email(
+            receiver.user,
+            amount,
+            "Receive Information",
+            "transactions/receive_email.html",
+            sender,
         )
 
         return super().form_valid(form)
